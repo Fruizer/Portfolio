@@ -11,6 +11,7 @@ import {
   Briefcase,
   Check,
   Code2,
+  Terminal,
   Cpu,
   Database,
   FileText,
@@ -60,13 +61,16 @@ const sections = [
 ];
 
 const stack: { name: string; discipline: string; icon: LucideIcon }[] = [
-  { name: "Tauri", discipline: "Desktop systems", icon: Layers3 },
-  { name: "React / Native", discipline: "Interface systems", icon: Braces },
-  { name: "Next.js", discipline: "Web platforms", icon: Code2 },
-  { name: "Supabase", discipline: "Data & realtime", icon: Database },
-  { name: "TypeScript", discipline: "Type-safe products", icon: ShieldCheck },
-  { name: "Expo", discipline: "Mobile delivery", icon: Sparkles },
-  { name: "C++", discipline: "Systems programming", icon: Cpu },
+ { name: "React / Next.js", discipline: "Web Architecture", icon: Code2 },
+  { name: "TypeScript / JS", discipline: "Type-Safe Systems", icon: ShieldCheck },
+  { name: "HTML5 / CSS3", discipline: "Layout & Rendering", icon: Braces },
+  { name: "Python / WASM", discipline: "Execution & Telemetry", icon: Cpu },
+  { name: "C++", discipline: "Networked Systems", icon: Terminal },
+  { name: "Java", discipline: "Core Engineering", icon: Code2 },
+  { name: "Electron", discipline: "Desktop Applications", icon: Layers3 },
+  { name: "Supabase", discipline: "Cloud & Data", icon: Database },
+  { name: "Gemini API", discipline: "AI Vision & Workflows", icon: Sparkles },
+  { name: "Tailwind CSS", discipline: "Styling Framework", icon: Braces },
 ];
 
 const projects: Project[] = [
@@ -299,13 +303,13 @@ export default function Home() {
             transition={{ duration: 0.35 }}
             className="mb-6 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-[#D4AF37] sm:text-sm"
           >
-            <span className="h-px w-8 bg-[#D4AF37]" /> Software engineer · Product builder
+            <span className="h-px w-8 bg-[#D4AF37]" /> LORENZO GILBERT FLORES · SOFTWARE ENGINEER & SYSTEMS DEVELOPER
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.05 }}
-            className="max-w-6xl text-[clamp(3.1rem,7.7vw,8.5rem)] font-semibold leading-[0.9] tracking-[-0.065em]"
+            className="max-w-6xl text-[clamp(3.1rem,7.7vw,8.5rem)] font-semibold leading-[0.9] tracking-[-0.02em]"
           >
             Systems that scale.
             <br />
@@ -328,9 +332,9 @@ export default function Home() {
       <section id="stack" className={sectionClass}>
         <motion.div {...reveal} className="mx-auto w-full max-w-7xl">
           <SectionHeading eyebrow="01 / Core systems" title="Tools shaped by the work." />
-          <div className="mt-8 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 lg:gap-3">
-            {stack.map(({ name, discipline, icon: Icon }, index) => (
-              <article key={name} className={`group rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition-all duration-200 hover:-translate-y-1 hover:border-[#D4AF37]/35 hover:bg-white/[0.06] sm:p-5 ${index === 0 ? "lg:col-span-2" : ""}`}>
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {stack.map(({ name, discipline, icon: Icon }) => (
+              <article key={name} className="group col-span-1 rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition-all duration-200 hover:-translate-y-1 hover:border-[#D4AF37]/35 hover:bg-white/[0.06] sm:p-5">
                 <Icon size={19} className="mb-5 text-[#D4AF37] transition-transform duration-200 group-hover:scale-110" />
                 <h3 className="text-sm font-medium sm:text-base">{name}</h3>
                 <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.16em] text-white/35">{discipline}</p>
@@ -462,7 +466,7 @@ export default function Home() {
           <div className="mt-10 flex w-full flex-col items-start justify-between gap-8 border-t border-white/10 pt-7 sm:flex-row sm:items-center">
             <p className="max-w-lg text-sm leading-6 text-white/45 sm:text-base">I’m always open to new opportunities, technical discussions, and collaborations. Let’s connect and see how we can build something great together.</p>
             <div className="flex flex-wrap items-center gap-3">
-              <a href="mailto:hello@lorenzo.dev?subject=Let%27s%20build%20something" className="group inline-flex shrink-0 items-center gap-3 rounded-full bg-[#D4AF37] px-6 py-3.5 text-sm font-semibold text-[#1A1D23] outline-none transition-colors duration-200 hover:bg-[#E2C45F] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A1D23]">
+              <a href="mailto:enzo715@gmail.com?subject=Let%27s%20build%20something" className="group inline-flex shrink-0 items-center gap-3 rounded-full bg-[#D4AF37] px-6 py-3.5 text-sm font-semibold text-[#1A1D23] outline-none transition-colors duration-200 hover:bg-[#E2C45F] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A1D23]">
                 Start a conversation <Mail size={17} className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
               <a
