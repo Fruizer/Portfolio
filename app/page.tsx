@@ -267,7 +267,7 @@ export default function Home() {
         </a>
         <nav
           aria-label="Primary navigation"
-          className="pointer-events-auto absolute left-1/2 hidden -translate-x-1/2 items-center gap-5 rounded-full border border-white/10 bg-[#1A1D23]/80 px-5 py-2.5 font-mono text-[9px] uppercase tracking-[0.14em] text-white/45 backdrop-blur-md lg:flex"
+          className="pointer-events-auto absolute left-1/2 hidden -translate-x-1/2 items-center gap-5 rounded-full border border-white/10 bg-[#1A1D23]/80 px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-white/45 backdrop-blur-md lg:flex"
         >
           {sections.map((section) => (
             <a
@@ -279,8 +279,8 @@ export default function Home() {
             </a>
           ))}
         </nav>
-        <div className="flex items-center gap-2 rounded-full border border-[#8AE2C5]/20 bg-[#8AE2C5]/5 px-3 py-1.5 font-mono text-[10px] tracking-[0.18em] text-[#8AE2C5] sm:text-xs">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#8AE2C5]" />
+        <div className="flex items-center gap-2 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-3 py-1.5 font-mono text-xs tracking-[0.18em] text-[#D4AF37]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
           SYSTEM: ONLINE
         </div>
       </header>
@@ -288,7 +288,7 @@ export default function Home() {
       <nav aria-label="Section indicator" className="fixed right-5 top-1/2 z-50 hidden -translate-y-1/2 flex-col gap-3 md:flex lg:right-8">
         {sections.map((section) => (
           <a key={section.id} href={`#${section.id}`} aria-label={`Go to ${section.label}`} className="group flex items-center justify-end gap-2">
-            <span className="translate-x-1 text-[9px] uppercase tracking-widest text-transparent transition-all duration-200 group-hover:translate-x-0 group-hover:text-white/45">{section.label}</span>
+            <span className="translate-x-1 text-xs uppercase tracking-widest text-transparent transition-all duration-200 group-hover:translate-x-0 group-hover:text-white/45">{section.label}</span>
             <span className="h-1.5 w-1.5 rounded-full border border-white/35 transition-all duration-200 group-hover:scale-150 group-hover:border-[#D4AF37] group-hover:bg-[#D4AF37]" />
           </a>
         ))}
@@ -301,43 +301,43 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
-            className="mb-6 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-[#D4AF37] sm:text-sm"
+            className="mb-6 flex items-center gap-3 font-mono text-xs tracking-[0.16em] text-[#D4AF37] sm:text-sm"
           >
-            <span className="h-px w-8 bg-[#D4AF37]" /> LORENZO GILBERT FLORES · SOFTWARE ENGINEER & SYSTEMS DEVELOPER
+            <span className="h-px w-8 bg-[#D4AF37]" /> Lorenzo Gilbert Flores · Software Engineer & Systems Developer
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.05 }}
-            className="max-w-6xl text-[clamp(3.1rem,7.7vw,8.5rem)] font-semibold leading-[0.9] tracking-[-0.02em]"
+            className="max-w-7xl text-[clamp(3rem,7vw,8.5rem)] font-semibold leading-[0.95] tracking-[-0.02em]"
           >
             Systems that scale.
-            <br />
+            <br className="hidden sm:block" />
             <span className="text-white/45">Interfaces that endure.</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.35, delay: 0.12 }}
-            className="mt-8 max-w-2xl border-l border-[#D4AF37]/50 pl-5 text-sm leading-6 text-white/55 sm:text-base"
+            className="mt-8 max-w-xl border-l border-[#D4AF37]/50 pl-5 text-sm leading-6 text-white/55 sm:text-base"
           >
             I design dependable digital products at the intersection of robust engineering and considered interaction.
           </motion.p>
         </div>
-        <a href="#stack" aria-label="Explore core systems" className="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/35 transition-colors duration-200 hover:text-[#D4AF37]">
+        <a href="#stack" aria-label="Explore core systems" className="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 font-mono text-xs uppercase tracking-[0.22em] text-white/35 transition-colors duration-200 hover:text-[#D4AF37]">
           Explore <ArrowDown size={16} strokeWidth={1.5} />
         </a>
       </section>
 
       <section id="stack" className={sectionClass}>
         <motion.div {...reveal} className="mx-auto w-full max-w-7xl">
-          <SectionHeading eyebrow="01 / Core systems" title="Tools shaped by the work." />
+          <SectionHeading title="Tools shaped by the work." />
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {stack.map(({ name, discipline, icon: Icon }) => (
               <article key={name} className="group col-span-1 rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition-all duration-200 hover:-translate-y-1 hover:border-[#D4AF37]/35 hover:bg-white/[0.06] sm:p-5">
                 <Icon size={19} className="mb-5 text-[#D4AF37] transition-transform duration-200 group-hover:scale-110" />
                 <h3 className="text-sm font-medium sm:text-base">{name}</h3>
-                <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.16em] text-white/35">{discipline}</p>
+                <p className="mt-1 font-mono text-xs uppercase tracking-[0.16em] text-white/35">{discipline}</p>
               </article>
             ))}
           </div>
@@ -349,13 +349,13 @@ export default function Home() {
       <section id="credentials" className={sectionClass}>
         <motion.div {...reveal} className="mx-auto grid w-full max-w-7xl items-center gap-7 lg:grid-cols-[0.7fr_1.3fr] lg:gap-14">
           <div>
-            <SectionHeading eyebrow="03 / Credentials" title="Evidence of the work." />
-            <p className="mt-5 max-w-md text-sm leading-6 text-white/45">A scalable record of verified certifications, paired with the academic systems work behind them.</p>
+            <SectionHeading title="Evidence of the work." />
+            <p className="mt-5 max-w-xl text-sm leading-6 text-white/45">A scalable record of verified certifications, paired with the academic systems work behind them.</p>
             <div className="mt-6 space-y-3">
               {academicHighlights.map((item) => (
-                <div key={item.title} className="border-l border-[#8AE2C5]/35 pl-4">
+                <div key={item.title} className="border-l border-[#D4AF37]/35 py-2 pl-4">
                   <p className="text-xs font-medium text-white/75">{item.title}</p>
-                  <p className="mt-1 text-[10px] leading-4 text-white/35">{item.detail}</p>
+                  <p className="mt-1 max-w-xl text-xs leading-5 text-white/35">{item.detail}</p>
                 </div>
               ))}
             </div>
@@ -372,24 +372,24 @@ export default function Home() {
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#D4AF37]/25 bg-[#D4AF37]/10 text-[#D4AF37]">
                       <Award size={19} />
                     </div>
-                    <span className="font-mono text-[9px] tracking-widest text-white/25">
+                    <span className="font-mono text-xs tracking-widest text-white/25">
                       FEATURED / 0{index + 1}
                     </span>
                   </div>
-                  <p className="mt-5 font-mono text-[9px] uppercase tracking-[0.18em] text-[#D4AF37]">
+                  <p className="mt-5 font-mono text-xs uppercase tracking-[0.18em] text-[#D4AF37]">
                     {credential.category}
                   </p>
                   <h3 className="mt-1.5 text-sm font-medium leading-5 text-white/90 sm:text-base">
                     {credential.title}
                   </h3>
-                  <p className="mt-1 text-[10px] text-white/40">
+                  <p className="mt-1 text-xs text-white/40">
                     {credential.issuer} • {credential.year}
                   </p>
                   <a
                     href={credential.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-auto inline-flex items-center gap-1.5 pt-5 font-mono text-[9px] uppercase tracking-[0.14em] text-[#8AE2C5] outline-none transition-colors duration-200 hover:text-white focus-visible:text-white"
+                    className="mt-auto inline-flex items-center gap-1.5 pt-5 font-mono text-xs uppercase tracking-[0.14em] text-[#D4AF37] outline-none transition-colors duration-200 hover:text-white focus-visible:text-white"
                   >
                     View credential <ArrowUpRight size={12} />
                   </a>
@@ -399,7 +399,7 @@ export default function Home() {
 
             <div>
               <div className="mb-3 flex items-center gap-3">
-                <p className="shrink-0 font-mono text-[9px] uppercase tracking-[0.22em] text-white/40">
+                <p className="shrink-0 font-mono text-xs tracking-[0.12em] text-white/40">
                   Continuous learning & workshops
                 </p>
                 <span className="h-px w-full bg-white/10" />
@@ -410,7 +410,7 @@ export default function Home() {
                     <div
                       key={`credential-placeholder-${index}`}
                       aria-label="Reserved for a future credential"
-                      className="flex min-h-14 items-center rounded-xl border border-dashed border-white/10 px-4 text-[10px] text-white/20"
+                      className="flex min-h-14 items-center rounded-xl border border-dashed border-white/10 px-4 py-3 text-xs text-white/20"
                     >
                       Reserved credential slot
                     </div>
@@ -422,11 +422,11 @@ export default function Home() {
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                           <h3 className="truncate text-xs font-medium text-white/80">{credential.title}</h3>
-                          <span className="rounded-full border border-[#D4AF37]/15 bg-[#D4AF37]/5 px-2 py-0.5 font-mono text-[7px] uppercase tracking-[0.14em] text-[#D4AF37]">
+                          <span className="rounded-full border border-[#D4AF37]/15 bg-[#D4AF37]/5 px-2 py-1 font-mono text-xs uppercase tracking-[0.14em] text-[#D4AF37]">
                             {credential.category}
                           </span>
                         </div>
-                        <p className="mt-1 text-[9px] text-white/35">
+                        <p className="mt-1 text-xs text-white/35">
                           {credential.issuer} • {credential.year}
                         </p>
                       </div>
@@ -435,7 +435,7 @@ export default function Home() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`View ${credential.title}`}
-                        className="inline-flex items-center gap-1 font-mono text-[8px] uppercase tracking-[0.12em] text-[#8AE2C5]/70 outline-none transition-colors duration-200 hover:text-[#8AE2C5] focus-visible:text-white"
+                        className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.12em] text-[#D4AF37]/70 outline-none transition-colors duration-200 hover:text-[#D4AF37] focus-visible:text-white"
                       >
                         View <ArrowUpRight size={10} />
                       </a>
@@ -450,10 +450,10 @@ export default function Home() {
 
       <section id="experience" className={sectionClass}>
         <motion.div {...reveal} className="mx-auto w-full max-w-7xl">
-          <SectionHeading eyebrow="04 / Experience" title="Two tracks. One practice." compact />
+          <SectionHeading title="Two tracks. One practice." compact />
           <div className="mt-7 grid gap-3 lg:grid-cols-2">
             <ExperienceTrack icon={Briefcase} label="Track A" title="Software Development / Engineering" entries={engineeringExperience} />
-            <ExperienceTrack icon={Users} label="Track B" title="Student Leadership & Community" entries={leadershipExperience} mint />
+            <ExperienceTrack icon={Users} label="Track B" title="Student Leadership & Community" entries={leadershipExperience} />
           </div>
         </motion.div>
       </section>
@@ -461,10 +461,9 @@ export default function Home() {
       <section id="contact" className={sectionClass}>
         <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         <motion.div {...reveal} className="relative mx-auto flex w-full max-w-7xl flex-col items-start">
-          <div className="mb-6 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-[#8AE2C5]"><Sparkles size={14} /> Comm channel open</div>
-          <h2 className="text-[clamp(4.2rem,11vw,11rem)] font-semibold leading-[0.82] tracking-[-0.075em]">Ready to build<span className="text-[#D4AF37]">?</span></h2>
+          <h2 className="text-[clamp(4.2rem,11vw,11rem)] font-semibold leading-[0.82] tracking-tight">Ready to build<span className="text-[#D4AF37]">?</span></h2>
           <div className="mt-10 flex w-full flex-col items-start justify-between gap-8 border-t border-white/10 pt-7 sm:flex-row sm:items-center">
-            <p className="max-w-lg text-sm leading-6 text-white/45 sm:text-base">I’m always open to new opportunities, technical discussions, and collaborations. Let’s connect and see how we can build something great together.</p>
+            <p className="max-w-xl text-sm leading-6 text-white/45 sm:text-base">I’m always open to new opportunities, technical discussions, and collaborations. Let’s connect and see how we can build something great together.</p>
             <div className="flex flex-wrap items-center gap-3">
               <a href="mailto:enzo715@gmail.com?subject=Let%27s%20build%20something" className="group inline-flex shrink-0 items-center gap-3 rounded-full bg-[#D4AF37] px-6 py-3.5 text-sm font-semibold text-[#1A1D23] outline-none transition-colors duration-200 hover:bg-[#E2C45F] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A1D23]">
                 Start a conversation <Mail size={17} className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -507,7 +506,7 @@ export default function Home() {
             </div>
           </div>
         </motion.div>
-        <div className="absolute bottom-7 left-6 right-6 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-white/25 sm:left-10 sm:right-10 lg:left-16 lg:right-16">
+        <div className="absolute bottom-7 left-6 right-6 flex items-center justify-between font-mono text-xs uppercase tracking-[0.18em] text-white/25 sm:left-10 sm:right-10 lg:left-16 lg:right-16">
           <span>Manila · Philippines</span><span>© {new Date().getFullYear()} Lorenzo</span>
         </div>
       </section>
@@ -537,12 +536,12 @@ function ProjectsSection({ projects }: { projects: Project[] }) {
     <section id="projects" className={sectionClass}>
       <motion.div {...reveal} className="mx-auto w-full max-w-7xl">
         <div className="flex items-end justify-between gap-4">
-          <SectionHeading eyebrow="02 / Selected systems" title="Built beyond the brief." compact />
+          <SectionHeading title="Built beyond the brief." compact />
           <div className="mb-1 flex items-center gap-2">
             <button type="button" onClick={showPreviousProject} aria-label="Previous project" className="project-control">
               <ArrowLeft size={17} />
             </button>
-            <span className="min-w-12 text-center font-mono text-[10px] tracking-widest text-white/40">
+            <span className="min-w-12 text-center font-mono text-xs tracking-widest text-white/40">
               {String(currentIndex + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
             </span>
             <button type="button" onClick={showNextProject} aria-label="Next project" className="project-control">
@@ -571,23 +570,23 @@ function ProjectsSection({ projects }: { projects: Project[] }) {
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#D4AF37]/25 bg-[#D4AF37]/10 text-[#D4AF37]">
                   <ProjectIcon size={20} />
                 </div>
-                <span className="rounded-full border border-[#8AE2C5]/20 bg-[#8AE2C5]/5 px-3 py-1 font-mono text-[9px] uppercase tracking-widest text-[#8AE2C5]">
+                <span className="rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-3 py-1 font-mono text-xs uppercase tracking-widest text-[#D4AF37]">
                   {project.status}
                 </span>
               </div>
-              <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[#D4AF37]">{project.type}</p>
-              <h3 className="mt-1 text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">{project.name}</h3>
-              <p className="mt-3 max-w-lg text-xs leading-5 text-white/45 sm:text-sm sm:leading-6">{project.description}</p>
+              <p className="mt-6 font-mono text-xs uppercase tracking-[0.2em] text-[#D4AF37]">{project.type}</p>
+              <h3 className="mt-1 text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">{project.name}</h3>
+              <p className="mt-3 max-w-xl text-xs leading-5 text-white/45 sm:text-sm sm:leading-6">{project.description}</p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {project.technologies.map((technology) => (
-                  <span key={technology} className="rounded-full border border-white/10 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.14em] text-white/55">
+                  <span key={technology} className="rounded-full border border-white/10 px-3 py-1 font-mono text-xs uppercase tracking-[0.14em] text-white/55">
                     {technology}
                   </span>
                 ))}
               </div>
             </div>
             <div className="p-5 sm:p-7">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">System specification</p>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/35">System specification</p>
               <dl className="mt-4 divide-y divide-white/10 border-y border-white/10">
                 {project.specs.map((spec) => (
                   <div key={spec.label} className="flex items-center justify-between gap-4 py-3 text-xs">
@@ -598,8 +597,8 @@ function ProjectsSection({ projects }: { projects: Project[] }) {
               </dl>
               <div className="mt-5 grid gap-2 sm:grid-cols-3">
                 {project.highlights.map((highlight) => (
-                  <div key={highlight} className="flex items-center gap-2 text-[10px] leading-4 text-white/50">
-                    <Check size={12} className="shrink-0 text-[#8AE2C5]" />
+                  <div key={highlight} className="flex items-center gap-2 py-2 text-xs leading-5 text-white/50">
+                    <Check size={12} className="shrink-0 text-[#D4AF37]" />
                     {highlight}
                   </div>
                 ))}
@@ -627,31 +626,30 @@ function ProjectsSection({ projects }: { projects: Project[] }) {
   );
 }
 
-function SectionHeading({ eyebrow, title, compact = false }: { eyebrow: string; title: string; compact?: boolean }) {
+function SectionHeading({ title, compact = false }: { title: string; compact?: boolean }) {
   return (
     <div>
-      <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em] text-[#D4AF37] sm:text-xs">{eyebrow}</p>
-      <h2 className={`${compact ? "text-4xl sm:text-5xl lg:text-6xl" : "text-4xl sm:text-5xl lg:text-7xl"} max-w-3xl font-semibold leading-[0.95] tracking-[-0.055em]`}>{title}</h2>
+      <h2 className={`${compact ? "text-4xl sm:text-5xl lg:text-6xl" : "text-4xl sm:text-5xl lg:text-7xl"} max-w-3xl font-semibold leading-[0.95] tracking-tight`}>{title}</h2>
     </div>
   );
 }
 
-function ExperienceTrack({ icon: Icon, label, title, entries, mint = false }: { icon: LucideIcon; label: string; title: string; entries: Experience[]; mint?: boolean }) {
-  const accent = mint ? "text-[#8AE2C5]" : "text-[#D4AF37]";
+function ExperienceTrack({ icon: Icon, label, title, entries }: { icon: LucideIcon; label: string; title: string; entries: Experience[] }) {
+  const accent = "text-[#D4AF37]";
   return (
     <article className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035]">
-      <header className="flex items-center gap-4 border-b border-white/10 bg-white/[0.025] p-5 sm:p-6">
+      <div className="flex items-center gap-4 px-5 pb-3 pt-5 sm:px-6 sm:pt-6">
         <div className={`flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-black/10 ${accent}`}><Icon size={19} /></div>
-        <div><p className={`font-mono text-[9px] uppercase tracking-[0.2em] ${accent}`}>{label}</p><h3 className="mt-1 text-sm font-medium sm:text-base">{title}</h3></div>
-      </header>
+        <div><p className={`font-mono text-xs uppercase tracking-[0.2em] ${accent}`}>{label}</p><h3 className="mt-1 text-sm font-medium sm:text-base">{title}</h3></div>
+      </div>
       <div className="divide-y divide-white/10 px-5 sm:px-6">
         {entries.map((entry) => (
           <div key={`${entry.role}-${entry.years}`} className="py-4 sm:py-5">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <div><h4 className="text-sm font-medium text-white/85">{entry.role}</h4><p className="mt-0.5 text-[10px] text-white/35">{entry.organization}</p></div>
-              <span className="rounded-full border border-white/10 bg-black/10 px-3 py-1 font-mono text-[9px] tracking-wider text-white/55">{entry.years}</span>
+              <div><h4 className="text-sm font-medium text-white/85">{entry.role}</h4><p className="mt-1 text-xs text-white/35">{entry.organization}</p></div>
+              <span className="rounded-full border border-white/10 bg-black/10 px-3 py-1 font-mono text-xs tracking-wider text-white/55">{entry.years}</span>
             </div>
-            <p className="mt-2 text-xs leading-5 text-white/40">{entry.description}</p>
+            <p className="mt-2 max-w-xl text-xs leading-5 text-white/40">{entry.description}</p>
           </div>
         ))}
       </div>
