@@ -13,6 +13,7 @@ import {
   Code2,
   Cpu,
   Database,
+  FileText,
   Layers3,
   Mail,
   ShieldCheck,
@@ -459,10 +460,19 @@ export default function Home() {
           <div className="mb-6 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-[#8AE2C5]"><Sparkles size={14} /> Comm channel open</div>
           <h2 className="text-[clamp(4.2rem,11vw,11rem)] font-semibold leading-[0.82] tracking-[-0.075em]">Ready to build<span className="text-[#D4AF37]">?</span></h2>
           <div className="mt-10 flex w-full flex-col items-start justify-between gap-8 border-t border-white/10 pt-7 sm:flex-row sm:items-center">
-            <p className="max-w-lg text-sm leading-6 text-white/45 sm:text-base">Have an ambitious product, a stubborn system, or an interface that deserves more care? Let&apos;s make it real.</p>
+            <p className="max-w-lg text-sm leading-6 text-white/45 sm:text-base">I’m always open to new opportunities, technical discussions, and collaborations. Let’s connect and see how we can build something great together.</p>
             <div className="flex flex-wrap items-center gap-3">
               <a href="mailto:hello@lorenzo.dev?subject=Let%27s%20build%20something" className="group inline-flex shrink-0 items-center gap-3 rounded-full bg-[#D4AF37] px-6 py-3.5 text-sm font-semibold text-[#1A1D23] outline-none transition-colors duration-200 hover:bg-[#E2C45F] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A1D23]">
                 Start a conversation <Mail size={17} className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+              <a
+                href="/Lorenzo_Flores_Resume.pdf"
+                download="Lorenzo_Flores_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-3.5 text-sm font-medium text-white outline-none transition-all duration-200 hover:border-[#D4AF37] hover:bg-white/10 hover:text-[#D4AF37] focus-visible:border-[#D4AF37] focus-visible:text-[#D4AF37]"
+              >
+                Resume <FileText size={16} />
               </a>
               <a
                 href="https://github.com/Fruizer"
