@@ -17,12 +17,14 @@ import {
   FileText,
   Layers3,
   Mail,
+  Moon,
   ShieldCheck,
   Sparkles,
+  Sun,
   Users,
   type LucideIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Project = {
   name: string;
@@ -255,6 +257,31 @@ const reveal = {
 };
 
 export default function Home() {
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [activeSection, setActiveSection] = useState("hero");
+
+  useEffect(() => {
+    const observedSections = sections
+      .map(({ id }) => document.getElementById(id))
+      .filter((section): section is HTMLElement => section !== null);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const activeEntry = entries.find((entry) => entry.isIntersecting);
+        if (activeEntry) setActiveSection(activeEntry.target.id);
+      },
+      {
+        root: null,
+        rootMargin: "-49% 0px -49% 0px",
+        threshold: 0,
+      },
+    );
+
+    observedSections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <main className="no-scrollbar portfolio-scroll h-screen w-full snap-y snap-mandatory overflow-y-scroll bg-[#1A1D23] text-[#F5F3EC] selection:bg-[#D4AF37]/30">
       <header className="pointer-events-none fixed left-0 top-0 z-50 flex w-full items-center justify-between px-6 py-5 sm:px-10 lg:px-16">
@@ -265,20 +292,32 @@ export default function Home() {
         >
           LORENZO<span className="text-[#D4AF37]">.</span>
         </a>
-        <nav
-          aria-label="Primary navigation"
-          className="pointer-events-auto absolute left-1/2 hidden -translate-x-1/2 items-center gap-5 rounded-full border border-white/10 bg-[#1A1D23]/80 px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-white/45 backdrop-blur-md lg:flex"
-        >
-          {sections.map((section) => (
-            <a
-              key={section.id}
-              href={`#${section.id}`}
-              className="transition-colors duration-200 hover:text-[#D4AF37] focus-visible:text-[#D4AF37] focus-visible:outline-none"
+        <div className="pointer-events-auto fixed left-1/2 top-6 z-50 hidden -translate-x-1/2 lg:block">
+          <nav
+            aria-label="Primary navigation"
+            className="flex items-center gap-5 whitespace-nowrap rounded-full border border-white/10 bg-[#1A1D23]/80 py-2.5 pl-8 pr-3 font-mono text-xs uppercase tracking-[0.14em] text-white/45 backdrop-blur-md"
+          >
+            {sections.map((section) => (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                className="transition-colors duration-200 hover:text-[#D4AF37] focus-visible:text-[#D4AF37] focus-visible:outline-none"
+              >
+                {section.label}
+              </a>
+            ))}
+            <div className="mx-1.5 h-3.5 w-px bg-white/15" aria-hidden="true" />
+            <button
+              type="button"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              aria-label="Toggle theme"
+              aria-pressed={theme === "light"}
+              className="flex items-center justify-center rounded-full p-1 text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#D4AF37]"
             >
-              {section.label}
-            </a>
-          ))}
-        </nav>
+              {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
+            </button>
+          </nav>
+        </div>
         <div className="flex items-center gap-2 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-3 py-1.5 font-mono text-xs tracking-[0.18em] text-[#D4AF37]">
           <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
           SYSTEM: ONLINE
@@ -287,9 +326,29 @@ export default function Home() {
 
       <nav aria-label="Section indicator" className="fixed right-5 top-1/2 z-50 hidden -translate-y-1/2 flex-col gap-3 md:flex lg:right-8">
         {sections.map((section) => (
-          <a key={section.id} href={`#${section.id}`} aria-label={`Go to ${section.label}`} className="group flex items-center justify-end gap-2">
-            <span className="translate-x-1 text-xs uppercase tracking-widest text-transparent transition-all duration-200 group-hover:translate-x-0 group-hover:text-white/45">{section.label}</span>
-            <span className="h-1.5 w-1.5 rounded-full border border-white/35 transition-all duration-200 group-hover:scale-150 group-hover:border-[#D4AF37] group-hover:bg-[#D4AF37]" />
+          <a
+            key={section.id}
+            href={`#${section.id}`}
+            aria-label={`Go to ${section.label}`}
+            aria-current={activeSection === section.id ? "page" : undefined}
+            className="group flex items-center justify-end gap-2"
+          >
+            <span
+              className={`text-xs uppercase tracking-widest transition-all duration-200 group-hover:translate-x-0 group-hover:text-white/45 ${
+                activeSection === section.id
+                  ? "translate-x-0 text-[#D4AF37]/70"
+                  : "translate-x-1 text-transparent"
+              }`}
+            >
+              {section.label}
+            </span>
+            <span
+              className={`h-1.5 w-1.5 rounded-full border transition-all duration-200 group-hover:scale-150 group-hover:border-[#D4AF37] group-hover:bg-[#D4AF37] ${
+                activeSection === section.id
+                  ? "scale-150 border-[#D4AF37] bg-[#D4AF37]"
+                  : "border-white/35 bg-transparent"
+              }`}
+            />
           </a>
         ))}
       </nav>
