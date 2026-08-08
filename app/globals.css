@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #1a1d23;
   --foreground: #f5f3ec;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --background: #f5f3ec;
+  --foreground: #1a1d23;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --background: #1a1d23;
+  --foreground: #f5f3ec;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -19,6 +34,7 @@
 html {
   background: var(--background);
   scroll-behavior: smooth;
+  view-transition-name: root;
 }
 
 body {
@@ -69,26 +85,69 @@ section {
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.035);
-  color: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(15, 23, 42, 0.035);
+  color: rgba(15, 23, 42, 0.65);
   transition: color 200ms ease, border-color 200ms ease, background-color 200ms ease;
 }
 
 .project-control:hover,
 .project-control:focus-visible {
+  border-color: rgba(180, 130, 8, 0.4);
+  background: rgba(15, 23, 42, 0.08);
+  color: #b48208;
+  outline: none;
+}
+
+.dark .project-control {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.035);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dark .project-control:hover,
+.dark .project-control:focus-visible {
   border-color: rgba(212, 175, 55, 0.45);
   background: rgba(255, 255, 255, 0.08);
   color: #d4af37;
-  outline: none;
 }
 
 .grid-overlay {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    linear-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.045) 1px, transparent 1px);
   background-size: 72px 72px;
   mask-image: linear-gradient(to bottom, transparent, black 22%, black 75%, transparent);
+}
+
+.dark .grid-overlay {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+}
+
+/* Disable the native crossfade; the toggle drives clip-path with WAAPI. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+html.dark::view-transition-old(root) {
+  z-index: 1;
+}
+
+html.dark::view-transition-new(root) {
+  z-index: 9999;
+}
+
+html:not(.dark)::view-transition-old(root) {
+  z-index: 9999;
+}
+
+html:not(.dark)::view-transition-new(root) {
+  z-index: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -103,5 +162,10 @@ section {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
   }
 }

@@ -24,7 +24,8 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent as ReactMouseEvent } from "react";
+import { flushSync } from "react-dom";
 
 type Project = {
   name: string;
@@ -35,6 +36,8 @@ type Project = {
   status: string;
   specs: { label: string; value: string }[];
   highlights: string[];
+  repoUrl?: string;
+  liveUrl?: string;
 };
 
 type Credential = {
@@ -90,6 +93,8 @@ const projects: Project[] = [
       { label: "Interface", value: "Kinetic TTS & Vanilla JS" },
     ],
     highlights: ["AI Vision Extraction", "Realtime Cloud Sync", "Kinetic Text Overlay"],
+    repoUrl: "https://github.com/Fruizer/ReelNotes",
+    liveUrl: "https://reel-notes-one.vercel.app",
   },
 
  {
@@ -106,6 +111,8 @@ const projects: Project[] = [
       { label: "Telemetry", value: "ILEM energy heuristic formula" },
     ],
     highlights: ["Thread-isolated execution", "Real-time Chart.js telemetry", "AST/Regex code instrumentation"],
+    repoUrl: "https://github.com/Fruizer/GreenCode",
+    liveUrl: "https://green-code-analyzer.vercel.app",
   },
 
   {
@@ -122,6 +129,8 @@ const projects: Project[] = [
       { label: "Rendering", value: "Collision Trees & Particles" },
     ],
     highlights: ["Inertia physics & dashes", "Cybernetic ability state", "Decoupled rendering loop"],
+    repoUrl: "https://github.com/Fruizer/ARROWKOPO",
+    liveUrl: "https://arrowkopo.vercel.app",
   },
   {
     name: "SaveState",
@@ -137,6 +146,7 @@ const projects: Project[] = [
       { label: "Status", value: "Active Prototype" },
     ],
     highlights: ["Native OS windowing", "Local state persistence", "IPC architecture study"],
+    repoUrl: "https://github.com/Fruizer/SaveState",
   },
 
 ];
@@ -224,10 +234,10 @@ const engineeringExperience: Experience[] = [
     description: "Designing and shipping AI-driven web interfaces, integrating real-time model streaming, dynamic state flows, and reactive UI architecture.",
   },
 {
-    role: "PLACEHOLDER",
-    organization: "PLACEHOLDER",
+    role: "Data encoder",
+    organization: "Frisvo ananta, Inc",
     years: "2024 — 2025",
-    description: "PLACEHOLDER",
+    description: "Collaborated with team leads to verify discrepancies and maintain structured data formatting standards across internal management systems.",
   },
 ];
 
@@ -260,6 +270,58 @@ export default function Home() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [activeSection, setActiveSection] = useState("hero");
 
+  const handleThemeToggle = (event: ReactMouseEvent<HTMLButtonElement>) => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    const x = event.clientX;
+    const y = event.clientY;
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y),
+    );
+    const root = document.documentElement;
+    const transitionDocument = document as Document & {
+      startViewTransition?: (update: () => void) => { ready: Promise<void> };
+    };
+
+    const updateDOM = () => {
+      root.dataset.theme = newTheme;
+      root.classList.toggle("dark", newTheme === "dark");
+      root.style.colorScheme = newTheme;
+      flushSync(() => setTheme(newTheme));
+    };
+
+    if (
+      !transitionDocument.startViewTransition ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      updateDOM();
+      return;
+    }
+
+    const transition = transitionDocument.startViewTransition(updateDOM);
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+
+      root.animate(
+        {
+          clipPath: newTheme === "dark" ? clipPath : [...clipPath].reverse(),
+        },
+        {
+          duration: 500,
+          easing: "ease-in-out",
+          pseudoElement:
+            newTheme === "dark"
+              ? "::view-transition-new(root)"
+              : "::view-transition-old(root)",
+        } as KeyframeAnimationOptions & { pseudoElement: string },
+      );
+    });
+  };
+
   useEffect(() => {
     const observedSections = sections
       .map(({ id }) => document.getElementById(id))
@@ -283,43 +345,43 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="no-scrollbar portfolio-scroll h-screen w-full snap-y snap-mandatory overflow-y-scroll bg-[#1A1D23] text-[#F5F3EC] selection:bg-[#D4AF37]/30">
+    <main className={`no-scrollbar portfolio-scroll h-screen w-full snap-y snap-mandatory overflow-y-scroll bg-[#F5F3EC] text-slate-900 selection:bg-[#B48208]/25 dark:bg-[#1A1D23] dark:text-[#F5F3EC] dark:selection:bg-[#D4AF37]/30 ${theme === "dark" ? "dark" : ""}`}>
       <header className="pointer-events-none fixed left-0 top-0 z-50 flex w-full items-center justify-between px-6 py-5 sm:px-10 lg:px-16">
         <a
           href="#hero"
-          className="pointer-events-auto font-mono text-sm font-semibold tracking-[0.22em] text-white transition-colors duration-200 hover:text-[#D4AF37]"
+          className="pointer-events-auto font-mono text-sm font-semibold tracking-[0.22em] text-slate-900 transition-colors duration-200 hover:text-[#92400E] dark:text-white dark:hover:text-[#D4AF37]"
           aria-label="Back to introduction"
         >
-          LORENZO<span className="text-[#D4AF37]">.</span>
+          LORENZO<span className="text-[#92400E] dark:text-[#D4AF37]">.</span>
         </a>
         <div className="pointer-events-auto fixed left-1/2 top-6 z-50 hidden -translate-x-1/2 lg:block">
           <nav
             aria-label="Primary navigation"
-            className="flex items-center gap-5 whitespace-nowrap rounded-full border border-white/10 bg-[#1A1D23]/80 py-2.5 pl-8 pr-3 font-mono text-xs uppercase tracking-[0.14em] text-white/45 backdrop-blur-md"
+            className="flex items-center gap-5 whitespace-nowrap rounded-full border border-slate-900/10 bg-[#F5F3EC]/90 py-2.5 pl-8 pr-3 font-mono text-xs uppercase tracking-[0.14em] text-slate-700/70 backdrop-blur-md dark:border-white/10 dark:bg-[#1A1D23]/80 dark:text-white/45"
           >
             {sections.map((section) => (
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="transition-colors duration-200 hover:text-[#D4AF37] focus-visible:text-[#D4AF37] focus-visible:outline-none"
+                className="transition-colors duration-200 hover:text-[#92400E] focus-visible:text-[#92400E] focus-visible:outline-none dark:hover:text-[#D4AF37] dark:focus-visible:text-[#D4AF37]"
               >
                 {section.label}
               </a>
             ))}
-            <div className="mx-1.5 h-3.5 w-px bg-white/15" aria-hidden="true" />
+            <div className="mx-1.5 h-3.5 w-px bg-slate-900/15 dark:bg-white/15" aria-hidden="true" />
             <button
               type="button"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={handleThemeToggle}
               aria-label="Toggle theme"
               aria-pressed={theme === "light"}
-              className="flex items-center justify-center rounded-full p-1 text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#D4AF37]"
+              className="flex items-center justify-center rounded-full p-1 text-slate-700/70 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#B48208] dark:text-white/70 dark:hover:text-white dark:focus-visible:ring-[#D4AF37]"
             >
               {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
             </button>
           </nav>
         </div>
-        <div className="flex items-center gap-2 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-3 py-1.5 font-mono text-xs tracking-[0.18em] text-[#D4AF37]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
+        <div className="flex items-center gap-2 rounded-full border border-[#92400E]/30 bg-[#B48208]/15 px-3 py-1.5 font-mono text-xs tracking-[0.08em] text-[#92400E] dark:border-[#D4AF37]/20 dark:bg-[#D4AF37]/5 dark:text-[#D4AF37]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#B48208] dark:bg-[#D4AF37]" />
           SYSTEM: ONLINE
         </div>
       </header>
@@ -334,19 +396,19 @@ export default function Home() {
             className="group flex items-center justify-end gap-2"
           >
             <span
-              className={`text-xs uppercase tracking-widest transition-all duration-200 group-hover:translate-x-0 group-hover:text-white/45 ${
+              className={`text-xs uppercase tracking-widest transition-all duration-200 group-hover:translate-x-0 group-hover:text-slate-700/70 dark:group-hover:text-white/45 ${
                 activeSection === section.id
-                  ? "translate-x-0 text-[#D4AF37]/70"
+                  ? "translate-x-0 text-[#92400E] dark:text-[#D4AF37]/70"
                   : "translate-x-1 text-transparent"
               }`}
             >
               {section.label}
             </span>
             <span
-              className={`h-1.5 w-1.5 rounded-full border transition-all duration-200 group-hover:scale-150 group-hover:border-[#D4AF37] group-hover:bg-[#D4AF37] ${
+              className={`h-1.5 w-1.5 rounded-full border transition-all duration-200 group-hover:scale-150 group-hover:border-[#B48208] group-hover:bg-[#B48208] dark:group-hover:border-[#D4AF37] dark:group-hover:bg-[#D4AF37] ${
                 activeSection === section.id
-                  ? "scale-150 border-[#D4AF37] bg-[#D4AF37]"
-                  : "border-white/35 bg-transparent"
+                  ? "scale-150 border-[#B48208] bg-[#B48208] dark:border-[#D4AF37] dark:bg-[#D4AF37]"
+                  : "border-slate-900/35 bg-transparent dark:border-white/35"
               }`}
             />
           </a>
@@ -360,9 +422,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
-            className="mb-6 flex items-center gap-3 font-mono text-xs tracking-[0.16em] text-[#D4AF37] sm:text-sm"
+            className="mb-6 flex items-center gap-3 font-mono text-xs tracking-[0.08em] text-[#92400E] dark:text-[#D4AF37] sm:text-sm"
           >
-            <span className="h-px w-8 bg-[#D4AF37]" /> Lorenzo Gilbert Flores · Software Engineer & Systems Developer
+            <span className="h-px w-8 bg-[#B48208] dark:bg-[#D4AF37]" /> Lorenzo Gilbert Flores · Software Engineer & Systems Developer
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -372,18 +434,18 @@ export default function Home() {
           >
             Systems that scale.
             <br className="hidden sm:block" />
-            <span className="text-white/45">Interfaces that endure.</span>
+            <span className="text-slate-800/60 dark:text-white/45">Interfaces that endure.</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.35, delay: 0.12 }}
-            className="mt-8 max-w-xl border-l border-[#D4AF37]/50 pl-5 text-sm leading-6 text-white/55 sm:text-base"
+            className="mt-8 max-w-xl border-l border-[#B48208]/40 pl-5 text-sm leading-6 text-slate-700/70 dark:border-[#D4AF37]/50 dark:text-white/55 sm:text-base"
           >
             I design dependable digital products at the intersection of robust engineering and considered interaction.
           </motion.p>
         </div>
-        <a href="#stack" aria-label="Explore core systems" className="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 font-mono text-xs uppercase tracking-[0.22em] text-white/35 transition-colors duration-200 hover:text-[#D4AF37]">
+        <a href="#stack" aria-label="Explore core systems" className="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 font-mono text-xs uppercase tracking-[0.22em] text-slate-700/70 transition-colors duration-200 hover:text-[#92400E] dark:text-white/35 dark:hover:text-[#D4AF37]">
           Explore <ArrowDown size={16} strokeWidth={1.5} />
         </a>
       </section>
@@ -393,10 +455,10 @@ export default function Home() {
           <SectionHeading title="Tools shaped by the work." />
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {stack.map(({ name, discipline, icon: Icon }) => (
-              <article key={name} className="group col-span-1 rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition-all duration-200 hover:-translate-y-1 hover:border-[#D4AF37]/35 hover:bg-white/[0.06] sm:p-5">
-                <Icon size={19} className="mb-5 text-[#D4AF37] transition-transform duration-200 group-hover:scale-110" />
+              <article key={name} className="group col-span-1 rounded-2xl border border-slate-900/10 bg-slate-900/[0.035] p-4 transition-all duration-200 hover:-translate-y-1 hover:border-[#B48208]/40 hover:bg-slate-900/[0.06] dark:border-white/10 dark:bg-white/[0.035] dark:hover:border-[#D4AF37]/35 dark:hover:bg-white/[0.06] sm:p-5">
+                <Icon size={19} className="mb-5 text-[#92400E] transition-transform duration-200 group-hover:scale-110 dark:text-[#D4AF37]" />
                 <h3 className="text-sm font-medium sm:text-base">{name}</h3>
-                <p className="mt-1 font-mono text-xs uppercase tracking-[0.16em] text-white/35">{discipline}</p>
+                <p className="mt-1 font-mono text-xs uppercase tracking-[0.08em] text-slate-700/70 dark:text-white/35">{discipline}</p>
               </article>
             ))}
           </div>
@@ -409,12 +471,12 @@ export default function Home() {
         <motion.div {...reveal} className="mx-auto grid w-full max-w-7xl items-center gap-7 lg:grid-cols-[0.7fr_1.3fr] lg:gap-14">
           <div>
             <SectionHeading title="Evidence of the work." />
-            <p className="mt-5 max-w-xl text-sm leading-6 text-white/45">A scalable record of verified certifications, paired with the academic systems work behind them.</p>
+            <p className="mt-5 max-w-xl text-sm leading-6 text-slate-700/70 dark:text-white/45">A scalable record of verified certifications, paired with the academic systems work behind them.</p>
             <div className="mt-6 space-y-3">
               {academicHighlights.map((item) => (
-                <div key={item.title} className="border-l border-[#D4AF37]/35 py-2 pl-4">
-                  <p className="text-xs font-medium text-white/75">{item.title}</p>
-                  <p className="mt-1 max-w-xl text-xs leading-5 text-white/35">{item.detail}</p>
+                <div key={item.title} className="border-l border-[#B48208]/40 py-2 pl-4 dark:border-[#D4AF37]/35">
+                  <p className="text-xs font-medium text-slate-700 dark:text-white/75">{item.title}</p>
+                  <p className="mt-1 max-w-xl text-xs leading-5 text-slate-700/70 dark:text-white/35">{item.detail}</p>
                 </div>
               ))}
             </div>
@@ -425,30 +487,30 @@ export default function Home() {
               {FEATURED_CREDENTIALS.map((credential, index) => (
                 <article
                   key={credential.title}
-                  className="group flex min-h-48 flex-col rounded-2xl border border-white/10 bg-white/[0.045] p-5 transition-colors duration-200 hover:bg-white/[0.07]"
+                  className="group flex min-h-48 flex-col rounded-2xl border border-slate-900/10 bg-slate-900/[0.045] p-5 transition-colors duration-200 hover:bg-slate-900/[0.07] dark:border-white/10 dark:bg-white/[0.045] dark:hover:bg-white/[0.07]"
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#D4AF37]/25 bg-[#D4AF37]/10 text-[#D4AF37]">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#92400E]/30 bg-[#B48208]/15 text-[#92400E] dark:border-[#D4AF37]/25 dark:bg-[#D4AF37]/10 dark:text-[#D4AF37]">
                       <Award size={19} />
                     </div>
-                    <span className="font-mono text-xs tracking-widest text-white/25">
+                    <span className="font-mono text-xs tracking-widest text-slate-400 dark:text-white/25">
                       FEATURED / 0{index + 1}
                     </span>
                   </div>
-                  <p className="mt-5 font-mono text-xs uppercase tracking-[0.18em] text-[#D4AF37]">
+                  <p className="mt-5 font-mono text-xs uppercase tracking-[0.08em] text-[#92400E] dark:text-[#D4AF37]">
                     {credential.category}
                   </p>
-                  <h3 className="mt-1.5 text-sm font-medium leading-5 text-white/90 sm:text-base">
+                  <h3 className="mt-1.5 text-sm font-medium leading-5 text-slate-900 dark:text-white/90 sm:text-base">
                     {credential.title}
                   </h3>
-                  <p className="mt-1 text-xs text-white/40">
+                  <p className="mt-1 text-xs text-slate-700/70 dark:text-white/40">
                     {credential.issuer} • {credential.year}
                   </p>
                   <a
                     href={credential.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-auto inline-flex items-center gap-1.5 pt-5 font-mono text-xs uppercase tracking-[0.14em] text-[#D4AF37] outline-none transition-colors duration-200 hover:text-white focus-visible:text-white"
+                    className="mt-auto inline-flex items-center gap-1.5 pt-5 font-mono text-xs uppercase tracking-[0.08em] text-[#92400E] outline-none transition-colors duration-200 hover:text-slate-900 focus-visible:text-slate-900 dark:text-[#D4AF37] dark:hover:text-white dark:focus-visible:text-white"
                   >
                     View credential <ArrowUpRight size={12} />
                   </a>
@@ -458,10 +520,10 @@ export default function Home() {
 
             <div>
               <div className="mb-3 flex items-center gap-3">
-                <p className="shrink-0 font-mono text-xs tracking-[0.12em] text-white/40">
+                <p className="shrink-0 font-mono text-xs tracking-[0.08em] text-slate-700/70 dark:text-white/40">
                   Continuous learning & workshops
                 </p>
-                <span className="h-px w-full bg-white/10" />
+                <span className="h-px w-full bg-slate-900/10 dark:bg-white/10" />
               </div>
               <div className="no-scrollbar max-h-[220px] space-y-2 overflow-y-auto pr-2" aria-label="Additional certifications and workshops">
                 {OTHER_CREDENTIALS.map((credential, index) =>
@@ -469,23 +531,23 @@ export default function Home() {
                     <div
                       key={`credential-placeholder-${index}`}
                       aria-label="Reserved for a future credential"
-                      className="flex min-h-14 items-center rounded-xl border border-dashed border-white/10 px-4 py-3 text-xs text-white/20"
+                      className="flex min-h-14 items-center rounded-xl border border-dashed border-slate-900/10 px-4 py-3 text-xs text-slate-400 dark:border-white/10 dark:text-white/20"
                     >
                       Reserved credential slot
                     </div>
                   ) : (
                     <article
                       key={`${credential.title}-${credential.year}`}
-                      className="grid min-h-14 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-white/10 bg-black/10 px-4 py-2.5 transition-colors duration-200 hover:bg-white/[0.045]"
+                      className="grid min-h-14 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-slate-900/10 bg-slate-900/5 px-4 py-2.5 transition-colors duration-200 hover:bg-slate-900/[0.045] dark:border-white/10 dark:bg-black/10 dark:hover:bg-white/[0.045]"
                     >
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                          <h3 className="truncate text-xs font-medium text-white/80">{credential.title}</h3>
-                          <span className="rounded-full border border-[#D4AF37]/15 bg-[#D4AF37]/5 px-2 py-1 font-mono text-xs uppercase tracking-[0.14em] text-[#D4AF37]">
+                          <h3 className="truncate text-xs font-medium text-slate-800 dark:text-white/80">{credential.title}</h3>
+                          <span className="rounded-full border border-[#92400E]/30 bg-[#B48208]/15 px-2 py-1 font-mono text-xs uppercase tracking-[0.08em] text-[#92400E] dark:border-[#D4AF37]/15 dark:bg-[#D4AF37]/5 dark:text-[#D4AF37]">
                             {credential.category}
                           </span>
                         </div>
-                        <p className="mt-1 text-xs text-white/35">
+                        <p className="mt-1 text-xs text-slate-700/70 dark:text-white/35">
                           {credential.issuer} • {credential.year}
                         </p>
                       </div>
@@ -494,7 +556,7 @@ export default function Home() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`View ${credential.title}`}
-                        className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.12em] text-[#D4AF37]/70 outline-none transition-colors duration-200 hover:text-[#D4AF37] focus-visible:text-white"
+                        className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.08em] text-[#92400E] outline-none transition-colors duration-200 hover:text-[#78350F] focus-visible:text-slate-900 dark:text-[#D4AF37]/70 dark:hover:text-[#D4AF37] dark:focus-visible:text-white"
                       >
                         View <ArrowUpRight size={10} />
                       </a>
@@ -518,13 +580,13 @@ export default function Home() {
       </section>
 
       <section id="contact" className={sectionClass}>
-        <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-slate-900/10 to-transparent dark:via-white/10" />
         <motion.div {...reveal} className="relative mx-auto flex w-full max-w-7xl flex-col items-start">
-          <h2 className="text-[clamp(4.2rem,11vw,11rem)] font-semibold leading-[0.82] tracking-tight">Ready to build<span className="text-[#D4AF37]">?</span></h2>
-          <div className="mt-10 flex w-full flex-col items-start justify-between gap-8 border-t border-white/10 pt-7 sm:flex-row sm:items-center">
-            <p className="max-w-xl text-sm leading-6 text-white/45 sm:text-base">I’m always open to new opportunities, technical discussions, and collaborations. Let’s connect and see how we can build something great together.</p>
+          <h2 className="text-[clamp(4.2rem,11vw,11rem)] font-semibold leading-[0.82] tracking-tight">Ready to build<span className="text-[#C59B27] dark:text-[#D4AF37]">?</span></h2>
+          <div className="mt-10 flex w-full flex-col items-start justify-between gap-8 border-t border-slate-900/10 pt-7 dark:border-white/10 sm:flex-row sm:items-center">
+            <p className="max-w-xl text-sm leading-6 text-slate-700/70 dark:text-white/45 sm:text-base">I’m always open to new opportunities, technical discussions, and collaborations. Let’s connect and see how we can build something great together.</p>
             <div className="flex flex-wrap items-center gap-3">
-              <a href="mailto:enzo715@gmail.com?subject=Let%27s%20build%20something" className="group inline-flex shrink-0 items-center gap-3 rounded-full bg-[#D4AF37] px-6 py-3.5 text-sm font-semibold text-[#1A1D23] outline-none transition-colors duration-200 hover:bg-[#E2C45F] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A1D23]">
+              <a href="mailto:enzo715@gmail.com?subject=Let%27s%20build%20something" className="group inline-flex shrink-0 items-center gap-3 rounded-full bg-[#1A1D23] px-6 py-3.5 text-sm font-semibold text-[#F5F3EC] outline-none transition-colors duration-200 hover:bg-[#2A2E37] focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F3EC] dark:bg-[#D4AF37] dark:text-[#1A1D23] dark:hover:bg-[#E2C45F] dark:focus-visible:ring-white dark:focus-visible:ring-offset-[#1A1D23]">
                 Start a conversation <Mail size={17} className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
               <a
@@ -532,7 +594,7 @@ export default function Home() {
                 download="Lorenzo_Flores_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-3.5 text-sm font-medium text-white outline-none transition-all duration-200 hover:border-[#D4AF37] hover:bg-white/10 hover:text-[#D4AF37] focus-visible:border-[#D4AF37] focus-visible:text-[#D4AF37]"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-900/15 bg-slate-900/5 px-5 py-3.5 text-sm font-medium text-slate-900 outline-none transition-all duration-200 hover:border-[#B48208]/40 hover:bg-slate-900/10 hover:text-[#B48208] focus-visible:border-[#B48208]/40 focus-visible:text-[#B48208] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:border-[#D4AF37]/20 dark:hover:bg-white/10 dark:hover:text-[#D4AF37] dark:focus-visible:border-[#D4AF37]/20 dark:focus-visible:text-[#D4AF37]"
               >
                 Resume <FileText size={16} />
               </a>
@@ -541,7 +603,7 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub Profile"
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 outline-none transition-all duration-200 hover:border-[#D4AF37] hover:bg-white/10 hover:text-[#D4AF37] focus-visible:border-[#D4AF37] focus-visible:text-[#D4AF37]"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-slate-900/10 bg-slate-900/5 text-slate-700/70 outline-none transition-all duration-200 hover:border-[#C59B27]/50 hover:bg-slate-900/10 hover:text-[#C59B27] focus-visible:border-[#C59B27]/50 focus-visible:text-[#C59B27] dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:border-[#D4AF37]/20 dark:hover:bg-white/10 dark:hover:text-[#D4AF37] dark:focus-visible:border-[#D4AF37]/20 dark:focus-visible:text-[#D4AF37]"
               >
                 <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                   <path
@@ -556,7 +618,7 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn Profile"
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 outline-none transition-all duration-200 hover:border-[#D4AF37] hover:bg-white/10 hover:text-[#D4AF37] focus-visible:border-[#D4AF37] focus-visible:text-[#D4AF37]"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-slate-900/10 bg-slate-900/5 text-slate-700/70 outline-none transition-all duration-200 hover:border-[#C59B27]/50 hover:bg-slate-900/10 hover:text-[#C59B27] focus-visible:border-[#C59B27]/50 focus-visible:text-[#C59B27] dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:border-[#D4AF37]/20 dark:hover:bg-white/10 dark:hover:text-[#D4AF37] dark:focus-visible:border-[#D4AF37]/20 dark:focus-visible:text-[#D4AF37]"
               >
                 <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.45a1.6 1.6 0 0 0-1.6 1.6c0 .88.72 1.6 1.6 1.6a1.6 1.6 0 0 0 1.6-1.6c0-.88-.72-1.6-1.6-1.6z" />
@@ -565,10 +627,11 @@ export default function Home() {
             </div>
           </div>
         </motion.div>
-        <div className="absolute bottom-7 left-6 right-6 flex items-center justify-between font-mono text-xs uppercase tracking-[0.18em] text-white/25 sm:left-10 sm:right-10 lg:left-16 lg:right-16">
+        <div className="absolute bottom-7 left-6 right-6 flex items-center justify-between font-mono text-xs uppercase tracking-[0.08em] text-slate-400 dark:text-white/25 sm:left-10 sm:right-10 lg:left-16 lg:right-16">
           <span>Manila · Philippines</span><span>© {new Date().getFullYear()} Lorenzo</span>
         </div>
       </section>
+
     </main>
   );
 }
@@ -600,7 +663,7 @@ function ProjectsSection({ projects }: { projects: Project[] }) {
             <button type="button" onClick={showPreviousProject} aria-label="Previous project" className="project-control">
               <ArrowLeft size={17} />
             </button>
-            <span className="min-w-12 text-center font-mono text-xs tracking-widest text-white/40">
+            <span className="min-w-12 text-center font-mono text-xs tracking-widest text-slate-700/70 dark:text-white/40">
               {String(currentIndex + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
             </span>
             <button type="button" onClick={showNextProject} aria-label="Next project" className="project-control">
@@ -622,46 +685,59 @@ function ProjectsSection({ projects }: { projects: Project[] }) {
                 ? "translate3d(0, 0, 0)"
                 : `${generatedTransform} translate3d(0, 0, 0)`
             }
-            className="mt-7 grid overflow-hidden rounded-3xl border border-white/10 bg-white/5 lg:grid-cols-[0.9fr_1.1fr]"
+            className="mt-7 grid overflow-hidden rounded-3xl border border-slate-900/10 bg-slate-900/5 dark:border-white/10 dark:bg-white/5 lg:grid-cols-[0.9fr_1.1fr]"
           >
-            <div className="border-b border-white/10 p-5 sm:p-7 lg:border-b-0 lg:border-r">
+            <div className="border-b border-slate-900/10 p-5 dark:border-white/10 sm:p-7 lg:border-b-0 lg:border-r">
               <div className="flex items-start justify-between gap-4">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#D4AF37]/25 bg-[#D4AF37]/10 text-[#D4AF37]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#92400E]/30 bg-[#B48208]/15 text-[#92400E] dark:border-[#D4AF37]/25 dark:bg-[#D4AF37]/10 dark:text-[#D4AF37]">
                   <ProjectIcon size={20} />
                 </div>
-                <span className="rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-3 py-1 font-mono text-xs uppercase tracking-widest text-[#D4AF37]">
+                <span className="rounded-full border border-[#92400E]/30 bg-[#B48208]/15 px-3 py-1 font-mono text-xs uppercase tracking-wider text-[#92400E] dark:border-[#D4AF37]/20 dark:bg-[#D4AF37]/5 dark:text-[#D4AF37]">
                   {project.status}
                 </span>
               </div>
-              <p className="mt-6 font-mono text-xs uppercase tracking-[0.2em] text-[#D4AF37]">{project.type}</p>
+              <p className="mt-6 font-mono text-xs uppercase tracking-[0.08em] text-[#92400E] dark:text-[#D4AF37]">{project.type}</p>
               <h3 className="mt-1 text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">{project.name}</h3>
-              <p className="mt-3 max-w-xl text-xs leading-5 text-white/45 sm:text-sm sm:leading-6">{project.description}</p>
+              <p className="mt-3 max-w-xl text-xs leading-5 text-slate-700/70 dark:text-white/45 sm:text-sm sm:leading-6">{project.description}</p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {project.technologies.map((technology) => (
-                  <span key={technology} className="rounded-full border border-white/10 px-3 py-1 font-mono text-xs uppercase tracking-[0.14em] text-white/55">
+                  <span key={technology} className="rounded-full border border-slate-900/10 px-3 py-1 font-mono text-xs uppercase tracking-[0.08em] text-slate-700/70 dark:border-white/10 dark:text-white/55">
                     {technology}
                   </span>
                 ))}
               </div>
             </div>
-            <div className="p-5 sm:p-7">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/35">System specification</p>
-              <dl className="mt-4 divide-y divide-white/10 border-y border-white/10">
+            <div className="flex flex-col p-5 sm:p-7">
+              <p className="font-mono text-xs uppercase tracking-[0.08em] text-slate-700/70 dark:text-white/35">System specification</p>
+              <dl className="mt-4 divide-y divide-slate-900/10 border-y border-slate-900/10 dark:divide-white/10 dark:border-white/10">
                 {project.specs.map((spec) => (
                   <div key={spec.label} className="flex items-center justify-between gap-4 py-3 text-xs">
-                    <dt className="text-white/35">{spec.label}</dt>
-                    <dd className="text-right text-white/75">{spec.value}</dd>
+                    <dt className="text-slate-700/70 dark:text-white/35">{spec.label}</dt>
+                    <dd className="text-right text-slate-700 dark:text-white/75">{spec.value}</dd>
                   </div>
                 ))}
               </dl>
               <div className="mt-5 grid gap-2 sm:grid-cols-3">
                 {project.highlights.map((highlight) => (
-                  <div key={highlight} className="flex items-center gap-2 py-2 text-xs leading-5 text-white/50">
-                    <Check size={12} className="shrink-0 text-[#D4AF37]" />
+                  <div key={highlight} className="flex items-center gap-2 py-2 text-xs leading-5 text-slate-700/70 dark:text-white/50">
+                    <Check size={12} className="shrink-0 text-[#92400E] dark:text-[#D4AF37]" />
                     {highlight}
                   </div>
                 ))}
               </div>
+              {(project.liveUrl || project.repoUrl) && (
+                <div className="mt-auto flex justify-end border-t border-slate-900/10 pt-4 dark:border-white/10">
+                  <a
+                    href={project.liveUrl ?? project.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.14em] text-[#92400E] transition-colors duration-200 hover:text-slate-900 dark:text-[#D4AF37] dark:hover:text-white"
+                  >
+                    {project.liveUrl ? "View build" : "View repository"}
+                    <ArrowUpRight size={12} />
+                  </a>
+                </div>
+              )}
             </div>
           </motion.article>
         </AnimatePresence>
@@ -676,7 +752,7 @@ function ProjectsSection({ projects }: { projects: Project[] }) {
               aria-current={index === currentIndex ? "true" : undefined}
               animate={{ width: index === currentIndex ? 28 : 6 }}
               transition={{ duration: 0.18, ease: "easeOut" }}
-              className={`h-1.5 cursor-pointer rounded-full transition-colors duration-200 ${index === currentIndex ? "bg-[#D4AF37]" : "bg-white/20 hover:bg-white/45"}`}
+              className={`h-1.5 cursor-pointer rounded-full transition-colors duration-200 ${index === currentIndex ? "bg-[#B48208] dark:bg-[#D4AF37]" : "bg-slate-900/20 hover:bg-slate-900/45 dark:bg-white/20 dark:hover:bg-white/45"}`}
             />
           ))}
         </div>
@@ -694,21 +770,21 @@ function SectionHeading({ title, compact = false }: { title: string; compact?: b
 }
 
 function ExperienceTrack({ icon: Icon, label, title, entries }: { icon: LucideIcon; label: string; title: string; entries: Experience[] }) {
-  const accent = "text-[#D4AF37]";
+  const accent = "text-[#92400E] dark:text-[#D4AF37]";
   return (
-    <article className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035]">
+    <article className="overflow-hidden rounded-3xl border border-slate-900/10 bg-slate-900/[0.035] dark:border-white/10 dark:bg-white/[0.035]">
       <div className="flex items-center gap-4 px-5 pb-3 pt-5 sm:px-6 sm:pt-6">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-black/10 ${accent}`}><Icon size={19} /></div>
-        <div><p className={`font-mono text-xs uppercase tracking-[0.2em] ${accent}`}>{label}</p><h3 className="mt-1 text-sm font-medium sm:text-base">{title}</h3></div>
+        <div className={`flex h-10 w-10 items-center justify-center rounded-xl border border-slate-900/10 bg-slate-900/5 dark:border-white/10 dark:bg-black/10 ${accent}`}><Icon size={19} /></div>
+        <div><p className={`font-mono text-xs uppercase tracking-[0.08em] ${accent}`}>{label}</p><h3 className="mt-1 text-sm font-medium sm:text-base">{title}</h3></div>
       </div>
-      <div className="divide-y divide-white/10 px-5 sm:px-6">
+      <div className="divide-y divide-slate-900/10 px-5 dark:divide-white/10 sm:px-6">
         {entries.map((entry) => (
           <div key={`${entry.role}-${entry.years}`} className="py-4 sm:py-5">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <div><h4 className="text-sm font-medium text-white/85">{entry.role}</h4><p className="mt-1 text-xs text-white/35">{entry.organization}</p></div>
-              <span className="rounded-full border border-white/10 bg-black/10 px-3 py-1 font-mono text-xs tracking-wider text-white/55">{entry.years}</span>
+              <div><h4 className="text-sm font-medium text-slate-800 dark:text-white/85">{entry.role}</h4><p className="mt-1 text-xs text-slate-700/70 dark:text-white/35">{entry.organization}</p></div>
+              <span className="rounded-full border border-slate-900/10 bg-slate-900/5 px-3 py-1 font-mono text-xs tracking-wider text-slate-700/70 dark:border-white/10 dark:bg-black/10 dark:text-white/55">{entry.years}</span>
             </div>
-            <p className="mt-2 max-w-xl text-xs leading-5 text-white/40">{entry.description}</p>
+            <p className="mt-2 max-w-md text-xs leading-5 text-slate-700/70 dark:text-white/40">{entry.description}</p>
           </div>
         ))}
       </div>
